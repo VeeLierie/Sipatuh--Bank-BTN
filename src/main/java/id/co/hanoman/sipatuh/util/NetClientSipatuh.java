@@ -92,8 +92,8 @@ public class NetClientSipatuh {
 			String tgl_bayar = req.getTgl_bayar();
 			String nom_ppiu = req.getNominal_ppiu();
 			String nom_asu = req.getNominal_asuransi();
-			String no_rek_ppiu = req.getNominal_rek_ppiu();
-			String no_rek_asu = req.getNominal_rek_asuransi();
+			String no_rek_ppiu = req.getNomor_rek_ppiu();
+			String no_rek_asu = req.getNomor_rek_asuransi();
 			String nama_rek_ppiu = req.getNama_rek_ppiu();
 			String nama_rek_asu = req.getNama_rek_asuransi();
 			String kd_channel = req.getKd_channel();
@@ -103,7 +103,7 @@ public class NetClientSipatuh {
 			bodyrequest = bodyrequest.replace(" ", "");
 			bodyrequest = bodyrequest.replace("\n", "");
 			
-			Object resCall = callUrl(bodyrequest,"pemabayaran");
+			Object resCall = callUrl(bodyrequest,"pembayaran");
 		    Response resp = new Response();
 		    resp.setResponse(resCall);
 		    res = resp;
@@ -119,7 +119,7 @@ public class NetClientSipatuh {
 		return res;
 	}
 	
-
+	
 	private  Object callUrl(String data1,String subPath) throws Exception{
 		log.info("request "+subPath+": "+ data1);
 	

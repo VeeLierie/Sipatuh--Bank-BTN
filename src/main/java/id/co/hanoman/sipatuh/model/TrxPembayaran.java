@@ -4,38 +4,49 @@ import javax.validation.constraints.NotNull;
 
 public class TrxPembayaran {
 	@NotNull
+	private
 	String nomor_registrasi;
 
 	@NotNull
+	private
 	String kd_cabang;
 	
 	@NotNull
+	private
 	String tgl_bayar;
 
 	@NotNull
+	private
 	String nominal_ppiu;
 
 	@NotNull
+	private
 	String nominal_asuransi;
 	
 	@NotNull
-	String nominal_rek_ppiu;
+	private
+	String nomor_rek_ppiu;
 	
 	@NotNull
-	String nominal_rek_asuransi;
+	private
+	String nomor_rek_asuransi;
 
 	@NotNull
 	private
 	String nama_rek_ppiu;
 	
 	@NotNull
+	private
 	String nama_rek_asuransi;
 	
 	@NotNull
+	private
 	String kd_channel;
 
 	@NotNull
+	private
 	String nomor_referensi;
+
 
 	public String getNomor_registrasi() {
 		return nomor_registrasi;
@@ -61,6 +72,14 @@ public class TrxPembayaran {
 		this.tgl_bayar = tgl_bayar;
 	}
 
+	public String getNominal_ppiu() {
+		return nominal_ppiu;
+	}
+
+	public void setNominal_ppiu(String nominal_ppiu) {
+		this.nominal_ppiu = nominal_ppiu;
+	}
+
 	public String getNominal_asuransi() {
 		return nominal_asuransi;
 	}
@@ -69,12 +88,28 @@ public class TrxPembayaran {
 		this.nominal_asuransi = nominal_asuransi;
 	}
 
-	public String getNominal_rek_asuransi() {
-		return nominal_rek_asuransi;
+	public String getNomor_rek_ppiu() {
+		return nomor_rek_ppiu;
 	}
 
-	public void setNominal_rek_asuransi(String nominal_rek_asuransi) {
-		this.nominal_rek_asuransi = nominal_rek_asuransi;
+	public void setNomor_rek_ppiu(String nomor_rek_ppiu) {
+		this.nomor_rek_ppiu = nomor_rek_ppiu;
+	}
+
+	public String getNomor_rek_asuransi() {
+		return nomor_rek_asuransi;
+	}
+
+	public void setNomor_rek_asuransi(String nomor_rek_asuransi) {
+		this.nomor_rek_asuransi = nomor_rek_asuransi;
+	}
+
+	public String getNama_rek_ppiu() {
+		return nama_rek_ppiu;
+	}
+
+	public void setNama_rek_ppiu(String nama_rek_ppiu) {
+		this.nama_rek_ppiu = nama_rek_ppiu;
 	}
 
 	public String getNama_rek_asuransi() {
@@ -101,29 +136,5 @@ public class TrxPembayaran {
 		this.nomor_referensi = nomor_referensi;
 	}
 
-	public String getNominal_ppiu() {
-		return nominal_ppiu;
-	}
-
-	public void setNominal_ppiu(String nominal_ppiu) {
-		this.nominal_ppiu = nominal_ppiu;
-	}
-
-	public String getNominal_rek_ppiu() {
-		return nominal_rek_ppiu;
-	}
-
-	public void setNominal_rek_ppiu(String nominal_rek_ppiu) {
-		this.nominal_rek_ppiu = nominal_rek_ppiu;
-	}
-
-	public String getNama_rek_ppiu() {
-		return nama_rek_ppiu;
-	}
-
-	public void setNama_rek_ppiu(String nama_rek_ppiu) {
-		this.nama_rek_ppiu = nama_rek_ppiu;
-	}
-
-
+	
 }
