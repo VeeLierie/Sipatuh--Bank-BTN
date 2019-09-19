@@ -50,8 +50,18 @@ public class SipatuhController {
 	}
 			)	
 
-	
-
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> login(@RequestBody LoginSipatuh req){
+		Object res = null;
+		try {
+			log.info("request login : "+getJson(req));
+			res = netclientsipatuh.login(req);
+			log.info("response login : "+getJson(res));
+		} catch (Exception e) {
+			log.error("login",e);
+		}		
+		return ResponseEntity.ok(res);
+	}	
 	
 	
 	@RequestMapping(value = "/pembayaran", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,6 +76,7 @@ public class SipatuhController {
 		}		
 		return ResponseEntity.ok(res);
 	}
+	
 	
 	public JsonNode getJson(Object obj){
 		ObjectMapper mapper = new ObjectMapper();
