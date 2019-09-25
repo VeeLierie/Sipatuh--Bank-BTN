@@ -25,7 +25,7 @@
     },
     {
       "sourceType": "id.co.hanoman.config.YAMLConfig",
-      "name": "sipatuh.url-rest",
+      "name": "sipatuh.token-isi",
       "type": "java.lang.String"
     },
     {

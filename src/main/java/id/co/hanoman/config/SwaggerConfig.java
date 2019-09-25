@@ -19,14 +19,14 @@ import springfox.documentation.builders.PathSelectors;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurationSupport {
+	
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("id.co.hanoman.controllers"))
-//                .paths(regex("/giropos.*"))
                 .paths(Predicates.not(PathSelectors.regex("/index.*")))
-               .build()
+                .build()
                 .apiInfo(metaData());
     }
     private ApiInfo metaData() {

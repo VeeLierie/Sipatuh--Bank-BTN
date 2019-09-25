@@ -4,47 +4,36 @@ import javax.validation.constraints.NotNull;
 
 public class TrxPembayaran {
 	@NotNull
-	private
 	String nomor_registrasi;
 
 	@NotNull
-	private
 	String kd_cabang;
 	
 	@NotNull
-	private
 	String tgl_bayar;
 
 	@NotNull
-	private
 	String nominal_ppiu;
 
 	@NotNull
-	private
 	String nominal_asuransi;
 	
 	@NotNull
-	private
 	String nomor_rek_ppiu;
 	
 	@NotNull
-	private
 	String nomor_rek_asuransi;
 
 	@NotNull
-	private
 	String nama_rek_ppiu;
 	
 	@NotNull
-	private
 	String nama_rek_asuransi;
 	
 	@NotNull
-	private
 	String kd_channel;
 
 	@NotNull
-	private
 	String nomor_referensi;
 
 

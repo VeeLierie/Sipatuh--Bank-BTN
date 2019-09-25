@@ -16,7 +16,7 @@ public class YAMLConfig {
 	private String userid;
 	private String password;
 
-	private String urlRest;
+	private String tokenisi;
 	private String urlToken;
 
 	private int timeout;
@@ -31,12 +31,12 @@ public class YAMLConfig {
 	}
 
 
-	public String getUrlRest() {
-		return urlRest;
+	public String getTokenIsi() {
+		return tokenisi;
 	}
 
-	public void setUrlRest(String urlRest) {
-		this.urlRest = urlRest;
+	public void setTokenIsi(String tokenisi) {
+		this.tokenisi = tokenisi;
 	}
 
 	public String getUrlToken() {

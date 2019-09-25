@@ -4,18 +4,15 @@ import javax.validation.constraints.NotNull;
 
 public class InquiryPembayaran {
 	@NotNull
-	private
+
 	String noregistrasi ;
 
-	String getNoregistrasi() {
+	public String getNoregistrasi() {
 		return noregistrasi;
 	}
 
 	void setNoregistrasi(String noregistrasi) {
 		this.noregistrasi = noregistrasi;
 	}
-
-
-
 	
 }
