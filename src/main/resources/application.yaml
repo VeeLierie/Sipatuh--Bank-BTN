@@ -25,7 +25,7 @@ sipatuh:
     urlToken: http://10.1.4.7/api-dev/umrah/bank/login
     timeout: 20000
     baseUrl: http://10.1.4.7/api-dev/umrah/bank/
-    tokenisi: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMDAiLCJjYXRlZ29yeSI6IkIiLCJpYXQiOjE1Njk0MDU5MTIsImV4cCI6MTU3MDAxMDcxMn0.472P8vuz76-hcdukDFlURYICvGW1DpwFAOHgUoVJJ_4
+    tokenisi: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMDAiLCJjYXRlZ29yeSI6IkIiLCJpYXQiOjE1Njk0NjcwNzksImV4cCI6MTU3MDA3MTg3OX0.M9AyZHTUfJvoJjWOQJ20n2H85aY8EWDGTrRnyYZngCg
     
 
 ---
@@ -41,6 +41,6 @@ sipatuh:
     urlToken: http://10.1.4.7/api-dev/umrah/bank/login
     timeout: 20000
     baseUrl: http://10.1.4.7/api-dev/umrah/bank/
-    tokenisi: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMDAiLCJjYXRlZ29yeSI6IkIiLCJpYXQiOjE1Njk0MDU5MTIsImV4cCI6MTU3MDAxMDcxMn0.472P8vuz76-hcdukDFlURYICvGW1DpwFAOHgUoVJJ_4
+    tokenisi: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMDAiLCJjYXRlZ29yeSI6IkIiLCJpYXQiOjE1Njk0NjcwNzksImV4cCI6MTU3MDA3MTg3OX0.M9AyZHTUfJvoJjWOQJ20n2H85aY8EWDGTrRnyYZngCg
     
     

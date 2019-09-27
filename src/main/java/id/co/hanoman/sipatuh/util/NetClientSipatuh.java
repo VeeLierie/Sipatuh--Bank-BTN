@@ -1,60 +1,25 @@
 package id.co.hanoman.sipatuh.util;
 
 import java.io.BufferedReader;
-//import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
-import java.lang.annotation.Annotation;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Set;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.xml.bind.DatatypeConverter;
-
-import org.jboss.logging.LogMessage;
-import org.jboss.logging.Logger.Level;
-import org.jose4j.http.Get;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.support.RequestDataValueProcessor;
-import org.thymeleaf.spring5.expression.RequestDataValues;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import id.co.hanoman.config.YAMLConfig;
 import id.co.hanoman.domain.Token;
 import id.co.hanoman.sipatuh.model.ErrorResponse;
-import id.co.hanoman.sipatuh.model.Response;
-import id.co.hanoman.sipatuh.model.LoginSipatuh;
-import id.co.hanoman.sipatuh.model.InquiryPembayaran;
 import id.co.hanoman.sipatuh.model.TrxPembayaran;
-import id.co.hanoman.sipatuh.model.CetakBuktiTransaksi;
-import id.co.hanoman.sipatuh.model.InfoTrxCabang;
-import id.co.hanoman.sipatuh.model.InfoTrxNoRegis;
-import id.co.hanoman.sipatuh.model.InfoTrxPeriode;
 
 
 @Component
@@ -64,34 +29,66 @@ public class NetClientSipatuh {
 	@Autowired	
 	YAMLConfig config ;
 
+	private Token token = null;
 
-	
-	public Object login(LoginSipatuh req) throws Exception{
-		Object resCall = null;
-		try {
-			
+	public   String getToken() throws Exception{
+		if(token==null){
 			String bodyrequest = "{\"userid\": \""+config.getUserid()+"\",\"password\": \""+config.getPassword()+"\"}";
 			bodyrequest = bodyrequest.replace(" ", "");
 			bodyrequest = bodyrequest.replace("\t", "");
-			
-			resCall = callUrl(bodyrequest,"login");
-			
-		    
-		} catch (MalformedURLException e) {
 
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				URL url = new URL(config.getBaseUrl()+"login");
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				log.info("conn :" + conn);
 
+				conn.setDoOutput(true);
+				conn.setRequestMethod("POST");
+				conn.setRequestProperty("Content-Type", "application/json");
+				conn.setRequestProperty("x-key", config.getXkey());				
+				OutputStream os = conn.getOutputStream();
+				os.write(bodyrequest.getBytes());
+				os.flush();
+				if (conn.getResponseCode() != 200) {
+					ErrorResponse errRes = new ErrorResponse();
+					errRes.setCode(String.valueOf(conn.getResponseCode()));
+					log.info("error 1 :"+ errRes);
+					BufferedReader br = new BufferedReader(new InputStreamReader(
+							(conn.getErrorStream())));
+					log.info("error 2 :"+ br);
+					ObjectMapper mapper = new ObjectMapper();
+					JsonNode root = mapper.readTree(br);
+					errRes.setError(root);
+					log.error("error login "+errRes);
+				}else {
+					BufferedReader br = new BufferedReader(new InputStreamReader(
+							(conn.getInputStream())));
+					log.info("error 2 :"+ br);
+					ObjectMapper mapper = new ObjectMapper();
+					JsonNode root = mapper.readTree(br);
+					log.info("root :"+ root);
+					String accessToken = root.get("token") != null ?root.get("token").asText():"";
+					Token tokenNew = new Token();
+					tokenNew.setToken(accessToken);
+					token = tokenNew;
+					return accessToken;					
+				}
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			return token.getToken();
 		}
-		return resCall;
+		return null;
 	}
-	
-	
-	public   Object pembayaran(TrxPembayaran req) throws Exception{
+
+
+	public Object pembayaran(TrxPembayaran req) throws Exception{
 		Object resCall = null;
 		try {
-			
+
 			String no_regis = req.getNomor_registrasi();
 			String kd_cabang = req.getKd_cabang();
 			String tgl_bayar = req.getTgl_bayar();
@@ -103,11 +100,17 @@ public class NetClientSipatuh {
 			String nama_rek_asu = req.getNama_rek_asuransi();
 			String kd_channel = req.getKd_channel();
 			String no_reff = req.getNomor_referensi();
-			
+
 			String bodyrequest = "{\n\"nomor_registrasi\" : \""+no_regis+"\",\n\"kd_cabang\": \""+kd_cabang+"\",\n\"tgl_bayar\" : \""+tgl_bayar+"\",\n\"nominal_ppiu\" : \""+nom_ppiu+"\",\n\"nominal_asuransi\" : \""+nom_asu+"\",\n\"nomor_rek_ppiu\" : \""+no_rek_ppiu+"\",\n\"nomor_rek_asuransi\" : \""+no_rek_asu+"\",\n\"nama_rek_ppiu\" : \""+nama_rek_ppiu+"\",\n\"nama_rek_asuransi\" : \""+nama_rek_asu+"\",\n\"kd_channel\" : \""+kd_channel+"\",\n\"nomor_referensi\" : \""+no_reff+"\"}";
-			
-			resCall = callUrl(bodyrequest,"pembayaran");
-			
+
+			if(no_regis.equals("xx111")){
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+			} else {
+				resCall = callUrl(bodyrequest,"pembayaran","POST");
+			}
+
 		} catch (MalformedURLException e) {
 
 			e.printStackTrace();
@@ -117,141 +120,165 @@ public class NetClientSipatuh {
 		}
 		return resCall;
 	}
-	
-	public Object inquiry(InquiryPembayaran no) throws Exception{
-		Object res = null;
+
+	public Object inquiry(String no) throws Exception{
+		Object resCall = null;
 		try {
-			
-			String nomor = no.getNoregistrasi();
-			
-			Object resCall = callUrlinq(nomor,"inquiry");
-		    Response resp = new Response();
-		    resp.setResponse(resCall);
-		    res = resp;
-		    
+
+			String nomor = no;
+			String path = "pembayaran/"+nomor;
+			if(nomor.equals("xx111")){
+				String bodyrequest = "{\n\"nomor_registrasi\" : \""+nomor+"\"}";
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+			} else {
+				resCall = callUrl(nomor,path,"GET");
+			}
+
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return res;
+		return resCall;
 	}
-	
 
-
-	private  Object callUrlinq(String data1, String subPath) throws Exception{
-		log.info("request : "+ data1);
-	
-		String noreg = "40016920825392";
-		
-		URL url = new URL(config.getBaseUrl()+"pembayaran/"+noreg);
-		log.info("request : "+ data1);
-		
+	public Object cetak(String no1, String no2) throws Exception{
+		Object resCall = null;
 		try {
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setReadTimeout(config.getTimeout());
-			conn.setDoOutput(true);
-			conn.setRequestMethod("GET");
-			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("x-key", config.getXkey());
-			conn.setRequestProperty("x-access-key", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMDAiLCJjYXRlZ29yeSI6IkIiLCJpYXQiOjE1NjkzMTMzMTIsImV4cCI6MTU2OTkxODExMn0.lbzV0aijuxy-8I-OSFLlOjeuFlAh4jbCLM7tHs65DOo");
+
+			String nomor = no1;
+			String reff = no2;
 			
-			OutputStream os = conn.getOutputStream();
-			os.write(data1.getBytes());
-			os.flush();
-			
-			if (conn.getResponseCode() != 200) {
-				ErrorResponse errRes = new ErrorResponse();
-				errRes.setCode(String.valueOf(conn.getResponseCode()));
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						(conn.getErrorStream())));
+			String path = "cetak/"+nomor+"/"+reff;
+			if(nomor.equals("xx111")){
+				String bodyrequest = "{\n\"nomor_registrasi\" : \""+nomor+"\",\n\"nomor_referensi\" : \""+reff+"\"}";
 				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.readTree(br);
-				String faultCode = root.get("fault").get("code").toString();
-				if(faultCode.equals("900901")){
-					log.info("Error :"+ faultCode +"callToken");
-				}
-				errRes.setError(root);
-
-				return errRes;
-
-			}else {
-				BufferedReader br = new BufferedReader(new InputStreamReader(
-						(conn.getInputStream())));
-				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.readTree(br);
-
-				return root;
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+			} else {
+				resCall = callUrl(nomor,path,"GET");
 			}
-		} catch (Exception e) {
-			String strErrMsg = e.toString();
-			ErrorResponse errRes = new ErrorResponse();
-			errRes.setCode("400");
-			if(strErrMsg.equals("java.net.ConnectException: Connection refused: connect")){
-				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.createObjectNode();
-				ObjectNode faultNode = mapper.createObjectNode();
-				faultNode.put("code", "G02");
-				faultNode.put("message", "Failed to connect");
-				((ObjectNode) root).set("fault", faultNode);
-				errRes.setError(root);
-			} else if(strErrMsg.equals("java.net.SocketTimeoutException: Read timed out")){
-				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.createObjectNode();
-				ObjectNode faultNode = mapper.createObjectNode();
-				faultNode.put("code", "G01");
-				faultNode.put("message", "Timeout from giropos");
-				((ObjectNode) root).set("fault", faultNode);
-				errRes.setError(root);
-			}else {
-				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.createObjectNode();
-				ObjectNode faultNode = mapper.createObjectNode();
-				faultNode.put("code", "G99");
-				faultNode.put("message", "General Error");
-				((ObjectNode) root).set("fault", faultNode);
-				errRes.setError(root);
-			}
-			
-			return errRes;
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return resCall;
 	}
-		
+
+	public Object infonoreg(String no) throws Exception{
+		Object resCall = null;
+		try {
+
+			String nomor = no;
+			
+			String path = "transaksi/jamaah/"+nomor;
+			if(nomor.equals("xx111")){
+				String bodyrequest = "{\n\"nomor_registrasi\" : \""+nomor+"\"}";
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+			} else {
+				resCall = callUrl(nomor,path,"GET");
+			}
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resCall;
+	}
+
+	public Object infocabang(String kd, String tg1, String tg2, String pg) throws Exception{
+		Object resCall = null;
+		try {
+
+			String kode = kd;
+			String tgl1 = tg1;
+			String tgl2 = tg2;
+			String page = pg;
+			
+			String path = "transaksi/cabang/"+kode+"/"+tgl1+"/"+tgl2+"/"+pg;
+			if(kode.equals("xx111")){
+				String bodyrequest = "{\n\"kd_cabang\" : \""+kode+"\",\n\"tgl_awal\" : \""+tgl1+"\",\n\"tgl_akhir\" : \""+tgl2+"\",\n\"page\" : \""+page+"\"}";
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+			} else {
+				resCall = callUrl(kode,path,"GET");
+			}
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resCall;
+	}
 	
-	private  Object callUrl(String data1,String subPath) throws Exception{
-		log.info("request "+subPath+": "+ data1);
+	public Object infoperiode(String tg1, String tg2, String pg) throws Exception{
+		Object resCall = null;
+		try {
+
+			String tgl1 = tg1;
+			String tgl2 = tg2;
+			String page = pg;
+			
+			String path = "transaksi/"+tgl1+"/"+tgl2+"/"+pg;
+			if(tgl1.equals("xx111")){
+				String bodyrequest = "{\n\"tgl_awal\" : \""+tgl1+"\",\n\"tgl_akhir\" : \""+tgl2+"\",\n\"page\" : \""+page+"\"}";
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+			} else {
+				resCall = callUrl(tgl1,path,"GET");
+			}
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resCall;
+	}
 	
+	
+	private  Object callUrl(String data1,String subPath,String type) throws Exception{
+		log.info("callUrl request "+subPath+": "+ data1);
+		String access_token  = getToken();
+		log.info("callUrl access_token :"+access_token);
 		URL url = new URL(config.getBaseUrl()+subPath);
-		log.info("url 1 :"+url);
+		log.info("callUrl url 1 :"+url);
 		try {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			log.info("conn :" + conn);
-			
-			conn.setDoOutput(true);
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("x-key", config.getXkey());
-			conn.setRequestProperty("x-access-key", config.getTokenIsi());
-			
-			OutputStream os = conn.getOutputStream();
-			os.write(data1.getBytes());
-			os.flush();
-			
+			conn.setRequestProperty("x-access-key", access_token);				
+
+
+			if(type.equals("POST")) {
+				conn.setRequestMethod("POST");
+				conn.setDoOutput(true);
+
+				if(data1!=null){
+					OutputStream os = conn.getOutputStream();
+					os.write(data1.getBytes());
+					os.flush();
+				}
+				
+			}
 			if (conn.getResponseCode() != 200) {
 				ErrorResponse errRes = new ErrorResponse();
-				errRes.setCode(String.valueOf(conn.getResponseCode()));
-				log.info("error 1 :"+ errRes);
+				String responseCode = String.valueOf(conn.getResponseCode());
+				errRes.setCode(responseCode);
+				log.info("error responseCode :"+ responseCode);
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						(conn.getErrorStream())));
-				log.info("error 2 :"+ br);
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(br);
-				String faultCode = root.get("fault").get("code").toString();
-				if(faultCode.equals("900901")){
-					log.info("Error :"+ faultCode +"callToken");
-//					token = null;
-				}
 				errRes.setError(root);
 
 				return errRes;
@@ -259,7 +286,7 @@ public class NetClientSipatuh {
 			}else {
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						(conn.getInputStream())));
-				log.info("error 2 :"+ br);
+				log.info("resp 200 :"+ br);
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(br);
 
@@ -267,28 +294,22 @@ public class NetClientSipatuh {
 			}
 		} catch (Exception e) {
 			String strErrMsg = e.toString();
+			log.info("error strErrMsg :"+ strErrMsg);
 			ErrorResponse errRes = new ErrorResponse();
 			errRes.setCode("400");
 			if(strErrMsg.equals("java.net.ConnectException: Connection refused: connect")){
 				errRes.setFaultCode("G02");
 				errRes.setFaultMessage("Failed to Connect");
-				
 			} else if(strErrMsg.equals("java.net.SocketTimeoutException: Read timed out")){
 				errRes.setFaultCode("G01");
 				errRes.setFaultMessage("Timeout from Server");
-				
 			}else {
 				errRes.setFaultCode("G99");
 				errRes.setFaultMessage("General Error");
 				log.info("error 2 :"+ errRes);
-
 			}
-			
 			return errRes;
 		}
-
 	}
-
-
 }
 
