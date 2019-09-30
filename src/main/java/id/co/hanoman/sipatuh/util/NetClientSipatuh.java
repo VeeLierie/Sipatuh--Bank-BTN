@@ -97,13 +97,12 @@ public class NetClientSipatuh {
 
 			String bodyrequest = "{\"nama\" : \""+nama+"\",\"password\": \""+pass+"\",\"password_baru\" : \""+newpass+"\",\"password_baru_check\" : \""+checkpass+"\"}";			
 			
-			if(nama.equals("xx111")){
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
 				resCall = root;
-			} else {
+	
 				resCall = callUrl(bodyrequest,"password","POST");
-			}
+		
 
 		} catch (MalformedURLException e) {
 
@@ -132,16 +131,13 @@ public class NetClientSipatuh {
 			String no_reff = req.getNomor_referensi();
 
 			String bodyrequest = "{\"nomor_registrasi\" : \""+no_regis+"\",\"kd_cabang\": \""+kd_cabang+"\",\"tgl_bayar\" : \""+tgl_bayar+"\",\"nominal_ppiu\" : \""+nom_ppiu+"\",\"nominal_asuransi\" : \""+nom_asu+"\",\"nomor_rek_ppiu\" : \""+no_rek_ppiu+"\",\"nomor_rek_asuransi\" : \""+no_rek_asu+"\",\"nama_rek_ppiu\" : \""+nama_rek_ppiu+"\",\"nama_rek_asuransi\" : \""+nama_rek_asu+"\",\"kd_channel\" : \""+kd_channel+"\",\"nomor_referensi\" : \""+no_reff+"\"}";			
-			
-			
-			if(no_regis.equals("xx111")){
+		
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
 				resCall = root;
-			} else {
+		
 				resCall = callUrl(bodyrequest,"pembayaran","POST");
-			}
-
+			
 		} catch (MalformedURLException e) {
 
 			e.printStackTrace();
@@ -158,14 +154,13 @@ public class NetClientSipatuh {
 
 			String nomor = no;
 			String path = "pembayaran/"+nomor;
-			if(nomor.equals("xx111")){
+			
 				String bodyrequest = "{\n\"nomor_registrasi\" : \""+nomor+"\"}";
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
 				resCall = root;
-			} else {
+			
 				resCall = callUrl(nomor,path,"GET");
-			}
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -183,14 +178,13 @@ public class NetClientSipatuh {
 			String reff = no2;
 			
 			String path = "cetak/"+nomor+"/"+reff;
-			if(nomor.equals("xx111")){
+			
 				String bodyrequest = "{\n\"nomor_registrasi\" : \""+nomor+"\",\n\"nomor_referensi\" : \""+reff+"\"}";
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
 				resCall = root;
-			} else {
+			
 				resCall = callUrl(nomor,path,"GET");
-			}
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -207,14 +201,13 @@ public class NetClientSipatuh {
 			String nomor = no;
 			
 			String path = "transaksi/jamaah/"+nomor;
-			if(nomor.equals("xx111")){
+			
 				String bodyrequest = "{\n\"nomor_registrasi\" : \""+nomor+"\"}";
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
 				resCall = root;
-			} else {
+			
 				resCall = callUrl(nomor,path,"GET");
-			}
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -234,15 +227,14 @@ public class NetClientSipatuh {
 			String page = pg;
 			
 			String path = "transaksi/cabang/"+kode+"/"+tgl1+"/"+tgl2+"/"+pg;
-			if(kode.equals("xx111")){
+		
 				String bodyrequest = "{\n\"kd_cabang\" : \""+kode+"\",\n\"tgl_awal\" : \""+tgl1+"\",\n\"tgl_akhir\" : \""+tgl2+"\",\n\"page\" : \""+page+"\"}";
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
 				resCall = root;
-			} else {
+			
 				resCall = callUrl(kode,path,"GET");
-			}
-
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -260,14 +252,13 @@ public class NetClientSipatuh {
 			String page = pg;
 			
 			String path = "transaksi/"+tgl1+"/"+tgl2+"/"+pg;
-			if(tgl1.equals("xx111")){
+
 				String bodyrequest = "{\n\"tgl_awal\" : \""+tgl1+"\",\n\"tgl_akhir\" : \""+tgl2+"\",\n\"page\" : \""+page+"\"}";
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
 				resCall = root;
-			} else {
+
 				resCall = callUrl(tgl1,path,"GET");
-			}
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
