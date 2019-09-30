@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import id.co.hanoman.config.YAMLConfig;
 import id.co.hanoman.domain.Token;
+import id.co.hanoman.sipatuh.model.ChangePass;
 import id.co.hanoman.sipatuh.model.ErrorResponse;
 import id.co.hanoman.sipatuh.model.TrxPembayaran;
 
@@ -84,6 +85,35 @@ public class NetClientSipatuh {
 		return null;
 	}
 
+	
+	public Object changepass(ChangePass req) throws Exception{
+		Object resCall = null;
+		try {
+
+			String nama = req.getNama();
+			String pass = req.getPassword();
+			String newpass = req.getPassword_baru();
+			String checkpass = req.getPassword_baru_check();
+
+			String bodyrequest = "{\"nama\" : \""+nama+"\",\"password\": \""+pass+"\",\"password_baru\" : \""+newpass+"\",\"password_baru_check\" : \""+checkpass+"\"}";			
+			
+			if(nama.equals("xx111")){
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+			} else {
+				resCall = callUrl(bodyrequest,"password","POST");
+			}
+
+		} catch (MalformedURLException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return resCall;
+	}
 
 	public Object pembayaran(TrxPembayaran req) throws Exception{
 		Object resCall = null;
@@ -101,8 +131,9 @@ public class NetClientSipatuh {
 			String kd_channel = req.getKd_channel();
 			String no_reff = req.getNomor_referensi();
 
-			String bodyrequest = "{\n\"nomor_registrasi\" : \""+no_regis+"\",\n\"kd_cabang\": \""+kd_cabang+"\",\n\"tgl_bayar\" : \""+tgl_bayar+"\",\n\"nominal_ppiu\" : \""+nom_ppiu+"\",\n\"nominal_asuransi\" : \""+nom_asu+"\",\n\"nomor_rek_ppiu\" : \""+no_rek_ppiu+"\",\n\"nomor_rek_asuransi\" : \""+no_rek_asu+"\",\n\"nama_rek_ppiu\" : \""+nama_rek_ppiu+"\",\n\"nama_rek_asuransi\" : \""+nama_rek_asu+"\",\n\"kd_channel\" : \""+kd_channel+"\",\n\"nomor_referensi\" : \""+no_reff+"\"}";
-
+			String bodyrequest = "{\"nomor_registrasi\" : \""+no_regis+"\",\"kd_cabang\": \""+kd_cabang+"\",\"tgl_bayar\" : \""+tgl_bayar+"\",\"nominal_ppiu\" : \""+nom_ppiu+"\",\"nominal_asuransi\" : \""+nom_asu+"\",\"nomor_rek_ppiu\" : \""+no_rek_ppiu+"\",\"nomor_rek_asuransi\" : \""+no_rek_asu+"\",\"nama_rek_ppiu\" : \""+nama_rek_ppiu+"\",\"nama_rek_asuransi\" : \""+nama_rek_asu+"\",\"kd_channel\" : \""+kd_channel+"\",\"nomor_referensi\" : \""+no_reff+"\"}";			
+			
+			
 			if(no_regis.equals("xx111")){
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
@@ -262,6 +293,7 @@ public class NetClientSipatuh {
 			if(type.equals("POST")) {
 				conn.setRequestMethod("POST");
 				conn.setDoOutput(true);
+				conn.setRequestProperty("Content-Type", "application/json");
 
 				if(data1!=null){
 					OutputStream os = conn.getOutputStream();

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import id.co.hanoman.sipatuh.model.ChangePass;
 import id.co.hanoman.sipatuh.model.TrxPembayaran;
 import id.co.hanoman.sipatuh.util.NetClientSipatuh;
 import io.swagger.annotations.Api;
@@ -33,6 +34,29 @@ public class SipatuhController {
 	NetClientSipatuh netclientsipatuh;
 	
 	static Logger log = LoggerFactory.getLogger(NetClientSipatuh.class);	 
+	
+	@ApiOperation(value = "Ganti Password",response = Iterable.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully retrieved list"),
+			@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	}
+			)	
+	@RequestMapping(value = "/password", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	public ResponseEntity<Object> changepass(@RequestBody ChangePass req){
+		Object res = null;
+		try {
+			log.info("request ganti password : "+getJson(req));
+			res = netclientsipatuh.changepass(req);
+			log.info("response ganti password : "+getJson(res));
+		} catch (Exception e) {
+			log.error("ganti password",e);
+		}		
+		return ResponseEntity.ok(res);
+	}
+	
 	@ApiOperation(value = "Pembayaran",response = Iterable.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -43,7 +67,7 @@ public class SipatuhController {
 			)	
 	@RequestMapping(value = "/pembayaran", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	
-public ResponseEntity<Object> pembayaran(@RequestBody TrxPembayaran req){
+	public ResponseEntity<Object> pembayaran(@RequestBody TrxPembayaran req){
 		Object res = null;
 		try {
 			log.info("request pembayaran : "+getJson(req));
