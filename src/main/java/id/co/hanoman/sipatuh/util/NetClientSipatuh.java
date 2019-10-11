@@ -21,6 +21,7 @@ import id.co.hanoman.domain.Token;
 import id.co.hanoman.sipatuh.model.ChangePass;
 import id.co.hanoman.sipatuh.model.ErrorResponse;
 import id.co.hanoman.sipatuh.model.TrxPembayaran;
+import id.co.hanoman.sipatuh.model.TrxPembayaran2;
 
 
 @Component
@@ -122,15 +123,12 @@ public class NetClientSipatuh {
 			String kd_cabang = req.getKd_cabang();
 			String tgl_bayar = req.getTgl_bayar();
 			String nom_ppiu = req.getNominal_ppiu();
-			String nom_asu = req.getNominal_asuransi();
 			String no_rek_ppiu = req.getNomor_rek_ppiu();
-			String no_rek_asu = req.getNomor_rek_asuransi();
 			String nama_rek_ppiu = req.getNama_rek_ppiu();
-			String nama_rek_asu = req.getNama_rek_asuransi();
 			String kd_channel = req.getKd_channel();
 			String no_reff = req.getNomor_referensi();
 
-			String bodyrequest = "{\"nomor_registrasi\" : \""+no_regis+"\",\"kd_cabang\": \""+kd_cabang+"\",\"tgl_bayar\" : \""+tgl_bayar+"\",\"nominal_ppiu\" : \""+nom_ppiu+"\",\"nominal_asuransi\" : \""+nom_asu+"\",\"nomor_rek_ppiu\" : \""+no_rek_ppiu+"\",\"nomor_rek_asuransi\" : \""+no_rek_asu+"\",\"nama_rek_ppiu\" : \""+nama_rek_ppiu+"\",\"nama_rek_asuransi\" : \""+nama_rek_asu+"\",\"kd_channel\" : \""+kd_channel+"\",\"nomor_referensi\" : \""+no_reff+"\"}";			
+			String bodyrequest = "{\"nomor_registrasi\" : \""+no_regis+"\",\"kd_cabang\": \""+kd_cabang+"\",\"tgl_bayar\" : \""+tgl_bayar+"\",\"nominal_ppiu\" : \""+nom_ppiu+"\",\"nomor_rek_ppiu\" : \""+no_rek_ppiu+"\",\"nama_rek_ppiu\" : \""+nama_rek_ppiu+"\",\"kd_channel\" : \""+kd_channel+"\",\"nomor_referensi\" : \""+no_reff+"\"}";			
 		
 				ObjectMapper mapper = new ObjectMapper();
 				JsonNode root = mapper.readTree(bodyrequest);
@@ -148,6 +146,37 @@ public class NetClientSipatuh {
 		return resCall;
 	}
 
+	public Object pembayaran_asuransi(TrxPembayaran2 req) throws Exception{
+		Object resCall = null;
+		try {
+			
+			String no_regis = req.getNomor_registrasi();
+			String kd_cabang = req.getKd_cabang();
+			String tgl_bayar = req.getTgl_bayar();
+			String nom_asu = req.getNominal_asuransi();
+			String no_rek_asu = req.getNomor_rek_asuransi();
+			String nama_rek_asu = req.getNama_rek_asuransi();
+			String kd_channel = req.getKd_channel();
+			String no_reff = req.getNomor_referensi();
+
+			String bodyrequest = "{\"nomor_registrasi\" : \""+no_regis+"\",\"kd_cabang\": \""+kd_cabang+"\",\"tgl_bayar\" : \""+tgl_bayar+"\",\"nominal_asuransi\" : \""+nom_asu+"\",\"nomor_rek_asuransi\" : \""+no_rek_asu+"\",\"nama_rek_asuransi\" : \""+nama_rek_asu+"\",\"kd_channel\" : \""+kd_channel+"\",\"nomor_referensi\" : \""+no_reff+"\"}";			
+		
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(bodyrequest);
+				resCall = root;
+		
+				resCall = callUrl(bodyrequest,"pembayaran/asuransi","POST");
+			
+		} catch (MalformedURLException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return resCall;
+	}
+	
 	public Object inquiry(String no) throws Exception{
 		Object resCall = null;
 		try {

@@ -14,21 +14,12 @@ public class TrxPembayaran {
 
 	@NotNull
 	String nominal_ppiu;
-
-	@NotNull
-	String nominal_asuransi;
 	
 	@NotNull
 	String nomor_rek_ppiu;
 	
 	@NotNull
-	String nomor_rek_asuransi;
-
-	@NotNull
 	String nama_rek_ppiu;
-	
-	@NotNull
-	String nama_rek_asuransi;
 	
 	@NotNull
 	String kd_channel;
@@ -69,14 +60,6 @@ public class TrxPembayaran {
 		this.nominal_ppiu = nominal_ppiu;
 	}
 
-	public String getNominal_asuransi() {
-		return nominal_asuransi;
-	}
-
-	public void setNominal_asuransi(String nominal_asuransi) {
-		this.nominal_asuransi = nominal_asuransi;
-	}
-
 	public String getNomor_rek_ppiu() {
 		return nomor_rek_ppiu;
 	}
@@ -85,28 +68,12 @@ public class TrxPembayaran {
 		this.nomor_rek_ppiu = nomor_rek_ppiu;
 	}
 
-	public String getNomor_rek_asuransi() {
-		return nomor_rek_asuransi;
-	}
-
-	public void setNomor_rek_asuransi(String nomor_rek_asuransi) {
-		this.nomor_rek_asuransi = nomor_rek_asuransi;
-	}
-
 	public String getNama_rek_ppiu() {
 		return nama_rek_ppiu;
 	}
 
 	public void setNama_rek_ppiu(String nama_rek_ppiu) {
 		this.nama_rek_ppiu = nama_rek_ppiu;
-	}
-
-	public String getNama_rek_asuransi() {
-		return nama_rek_asuransi;
-	}
-
-	public void setNama_rek_asuransi(String nama_rek_asuransi) {
-		this.nama_rek_asuransi = nama_rek_asuransi;
 	}
 
 	public String getKd_channel() {

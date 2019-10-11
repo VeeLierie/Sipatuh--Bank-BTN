@@ -5,6 +5,7 @@ F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\ErrorRes
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\repositories\ProductRepository.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\TrxPembayaran.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\config\YAMLConfig.java
+F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\TrxPembayaran2.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\InfoTrxCabang.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\Response.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\CetakBuktiTransaksi.java
@@ -17,6 +18,7 @@ F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\repositories\TokenRepo
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\LoginSipatuh.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\util\NetClientSipatuh.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\config\SwaggerConfig.java
+F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\sipatuh\model\ChangePass.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\services\ProductServiceImpl.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\domain\Token.java
 F:\Hanoman\SpringBoot\sipatuh\src\main\java\id\co\hanoman\controllers\SipatuhController.java

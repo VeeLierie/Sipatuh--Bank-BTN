@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import id.co.hanoman.sipatuh.model.ChangePass;
 import id.co.hanoman.sipatuh.model.TrxPembayaran;
+import id.co.hanoman.sipatuh.model.TrxPembayaran2;
 import id.co.hanoman.sipatuh.util.NetClientSipatuh;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -79,6 +80,28 @@ public class SipatuhController {
 		return ResponseEntity.ok(res);
 	}
 	
+	@ApiOperation(value = "Pembayaran Asuransi",response = Iterable.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Successfully retrieved list"),
+			@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+			@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+			@ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	}
+			)	
+	@RequestMapping(value = "/pembayaran/asuransi", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	public ResponseEntity<Object> pembayaran_asuransi(@RequestBody TrxPembayaran2 req){
+		Object res = null;
+		try {
+			log.info("request pembayaran_asuransi : "+getJson(req));
+			res = netclientsipatuh.pembayaran_asuransi(req);
+			log.info("response Pembayaran_asuransi : "+getJson(res));
+		} catch (Exception e) {
+			log.error("pembayaran_asuransi",e);
+		}		
+		return ResponseEntity.ok(res);
+	}
+	
 	@ApiOperation(value = "Inquiry",response = Iterable.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -116,12 +139,12 @@ public class SipatuhController {
 		    ,@RequestParam(value="nomor_referensi") String noref) {
 		Object res = null;
 		try {
-			log.info("request inq : "+getJson(nomor));
-			log.info("request inq : "+getJson(noref));
+			log.info("request cetak nomor : "+getJson(nomor));
+			log.info("request cetak noref : "+getJson(noref));
 			res = netclientsipatuh.cetak(nomor, noref);
-			log.info("response inq: "+getJson(res));
+			log.info("response cetak: "+getJson(res));
 		} catch (Exception e) {
-			log.error("inq",e);
+			log.error("cetak",e);
 		}		
 		return ResponseEntity.ok(res);
 	}
@@ -139,11 +162,11 @@ public class SipatuhController {
 	public ResponseEntity<Object> infonoreg(@RequestParam(value="nomor_registrasi") String nomor) {
 		Object res = null;
 		try {
-			log.info("request inq : "+getJson(nomor));
+			log.info("request infonoreg : "+getJson(nomor));
 			res = netclientsipatuh.infonoreg(nomor);
-			log.info("response inq: "+getJson(res));
+			log.info("response infonoreg : "+getJson(res));
 		} catch (Exception e) {
-			log.error("inq",e);
+			log.error("infonoreg",e);
 		}		
 		return ResponseEntity.ok(res);
 	}     
@@ -165,14 +188,14 @@ public class SipatuhController {
 		    @RequestParam(value="page") String page){
 		Object res = null;
 		try {
-			log.info("request inq : "+getJson(kode));
-			log.info("request inq : "+getJson(tgl1));
-			log.info("request inq : "+getJson(tgl2));
-			log.info("request inq : "+getJson(page));
+			log.info("request kode : "+getJson(kode));
+			log.info("request tgl awal : "+getJson(tgl1));
+			log.info("request tgl akhir : "+getJson(tgl2));
+			log.info("request page : "+getJson(page));
 			res = netclientsipatuh.infocabang(kode, tgl1, tgl2, page);
-			log.info("response inq: "+getJson(res));
+			log.info("response infocabang: "+getJson(res));
 		} catch (Exception e) {
-			log.error("inq",e);
+			log.error("infocabang",e);
 		}		
 		return ResponseEntity.ok(res);
 	}
@@ -193,13 +216,13 @@ public class SipatuhController {
 		    @RequestParam(value="page") String page){
 		Object res = null;
 		try {
-			log.info("request inq : "+getJson(tgl1));
-			log.info("request inq : "+getJson(tgl2));
-			log.info("request inq : "+getJson(page));
+			log.info("request tanggal awal : "+getJson(tgl1));
+			log.info("request tanggal akhir : "+getJson(tgl2));
+			log.info("request page : "+getJson(page));
 			res = netclientsipatuh.infoperiode(tgl1, tgl2, page);
-			log.info("response inq: "+getJson(res));
+			log.info("response infoperiode : "+getJson(res));
 		} catch (Exception e) {
-			log.error("inq",e);
+			log.error("infoperiode",e);
 		}		
 		return ResponseEntity.ok(res);
 	}
