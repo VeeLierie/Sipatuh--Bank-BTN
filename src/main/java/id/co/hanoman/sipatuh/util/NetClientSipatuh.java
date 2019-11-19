@@ -30,15 +30,14 @@ public class NetClientSipatuh {
 
 	@Autowired	
 	YAMLConfig config ;
-
-	private Token token = null;
-
+	
 	public   String getToken() throws Exception{
+		Token token = null;
 		if(token==null){
 			String bodyrequest = "{\"userid\": \""+config.getUserid()+"\",\"password\": \""+config.getPassword()+"\"}";
 			bodyrequest = bodyrequest.replace(" ", "");
 			bodyrequest = bodyrequest.replace("\t", "");
-
+			
 			try {
 				URL url = new URL(config.getBaseUrl()+"login");
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -80,8 +79,6 @@ public class NetClientSipatuh {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else {
-			return token.getToken();
 		}
 		return null;
 	}
@@ -245,6 +242,7 @@ public class NetClientSipatuh {
 		}
 		return resCall;
 	}
+	
 
 	public Object infocabang(String kd, String tg1, String tg2, String pg) throws Exception{
 		Object resCall = null;
@@ -306,7 +304,6 @@ public class NetClientSipatuh {
 		log.info("callUrl url 1 :"+url);
 		try {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			log.info("conn :" + conn);
 			conn.setRequestProperty("x-access-key", access_token);				
 
 
@@ -320,7 +317,8 @@ public class NetClientSipatuh {
 					os.write(data1.getBytes());
 					os.flush();
 				}
-				
+			
+
 			}
 			if (conn.getResponseCode() != 200) {
 				ErrorResponse errRes = new ErrorResponse();

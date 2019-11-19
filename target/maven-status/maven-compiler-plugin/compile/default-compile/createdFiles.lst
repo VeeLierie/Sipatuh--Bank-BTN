@@ -15,6 +15,7 @@ id\co\hanoman\config\SpringSecConfig.class
 id\co\hanoman\sipatuh\model\TrxPembayaran.class
 id\co\hanoman\controllers\SipatuhController.class
 id\co\hanoman\services\ProductServiceImpl.class
+id\co\hanoman\sipatuh\model\ChangePass.class
 id\co\hanoman\domain\Product.class
 id\co\hanoman\services\ProductService.class
 id\co\hanoman\sipatuh\model\LoginSipatuh.class
@@ -24,3 +25,4 @@ id\co\hanoman\domain\Token.class
 id\co\hanoman\config\YAMLConfig.class
 id\co\hanoman\sipatuh\model\Response.class
 id\co\hanoman\repositories\TokenRepository.class
+id\co\hanoman\sipatuh\model\TrxPembayaran2.class
